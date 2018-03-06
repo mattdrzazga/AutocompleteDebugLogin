@@ -13,6 +13,22 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        prepareAutocomplete()
+    }
+
+    private fun prepareAutocomplete() {
+        if (BuildConfig.DEBUG) return
+        val pairs = resources.getStringArray(R.array.accounts).map {
+            val loginAndPassword = it.split(":")
+            Pair(loginAndPassword.first(), loginAndPassword.last())
+        }
+        val map = pairs.toMap()
+
+        val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, pairs.map { it.first })
+        email.setOnItemClickListener { parent, view, position, id ->
+            password.setText(map[adapter.getItem(position)])
+        }
+        email.setAdapter(adapter)
     }
 
     /**

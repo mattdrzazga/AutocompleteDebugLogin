@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="accounts">
+        <item>matt.drzazga@gmail.com:totally_not_password</item>
+        <item>notmatt.drzazga@gmail.com:totally_not_password</item>
+        <item>maybematt.drzazga@gmail.com:totally_not_password</item>
+        <item>ratherNotmatt.drzazga@gmail.com:totally_not_password</item>
+    </array>
+</resources>
