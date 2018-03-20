@@ -5,7 +5,9 @@ import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.auto_complete_layout.*
 
 
 class LoginActivity : AppCompatActivity() {
@@ -13,22 +15,23 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        prepareAutocomplete()
+        if (BuildConfig.DEBUG) {
+            prepareAutocomplete()
+        }
     }
 
     private fun prepareAutocomplete() {
-        if (BuildConfig.DEBUG) return
         val pairs = resources.getStringArray(R.array.accounts).map {
             val loginAndPassword = it.split(":")
             Pair(loginAndPassword.first(), loginAndPassword.last())
         }
         val map = pairs.toMap()
-
+        val autoCompleteTextView: AutoCompleteTextView = findViewById(R.id.email)
         val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, pairs.map { it.first })
-        email.setOnItemClickListener { parent, view, position, id ->
+        autoCompleteTextView.setOnItemClickListener { parent, view, position, id ->
             password.setText(map[adapter.getItem(position)])
         }
-        email.setAdapter(adapter)
+        autoCompleteTextView.setAdapter(adapter)
     }
 
     /**
@@ -65,7 +68,6 @@ class LoginActivity : AppCompatActivity() {
             focusView = email
             cancel = true
         }
-
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -84,13 +86,5 @@ class LoginActivity : AppCompatActivity() {
     private fun isPasswordValid(password: String): Boolean {
         //TODO: Replace this with your own logic
         return password.length > 4
-    }
-
-    private fun addEmailsToAutoComplete(emailAddressCollection: List<String>) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        val adapter = ArrayAdapter(this@LoginActivity,
-                android.R.layout.simple_dropdown_item_1line, emailAddressCollection)
-
-        email.setAdapter(adapter)
     }
 }
